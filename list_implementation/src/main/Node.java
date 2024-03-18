@@ -1,3 +1,5 @@
+package main;
+
 /**
  * Node support class for CSCI 1933 Project 3 Spring 2021.
  *
