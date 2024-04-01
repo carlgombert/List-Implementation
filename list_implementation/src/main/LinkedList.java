@@ -13,10 +13,13 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 	}
 	
 	public boolean add(T element) {
-		if(length < 1) {
+		if(length == 0) {
 			head.setNext(new Node<T>(element));
 			length++;
 			return true;
+		}
+		else if(length > 1) {
+			checkSorted();
 		}
 		Node<T> n = head;
 		while(n.getNext() != null) {
@@ -27,7 +30,6 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 		return true;
 	}
 
-	
 	public boolean add(int index, T element) {
 		if(index > length) {
 			return false;
@@ -47,8 +49,8 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 
 	
 	public void clear() {
-		
-		
+		head.setNext(null);
+		length = 0;
 	}
 
 	
@@ -138,6 +140,7 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 		}
 		Node<T> temp = n.getNext();
 		n.setNext(n.getNext().getNext());
+		checkSorted();
 		length--;
 		return temp.getData();
 	}
@@ -146,11 +149,16 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 	public void removeDuplicates() {
 		HashSet<T> occurances = new HashSet<T>();
 		Node<T> n = head;
+		int count = 0;
 		while(n.getNext() != null) {
+			count++;
 			n = n.getNext();
 			occurances.add(n.getData());
 			while(n.getNext() != null && occurances.contains(n.getNext().getData())) {
 				n.setNext(n.getNext().getNext());
+				if(n.getNext() != null) {
+					checkSorted();
+				}
 				length--;
 			}
 		}
@@ -168,6 +176,7 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 				length--;
 				count++;
 			}
+			checkSorted();
 		}
 		
 	}
@@ -224,6 +233,17 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 			str += "\n";
 		}
 		return str;
+	}
+	
+	private void checkSorted() {
+		isSorted = true;
+		for (int i = 0; i < length - 1; i++) {
+			for (int j = i+1; j < length-1; j++) {
+				if (get(j).compareTo(get(i)) < 0) {
+					isSorted = false;
+				}
+			}
+		}
 	}
 
 }

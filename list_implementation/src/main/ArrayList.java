@@ -1,70 +1,131 @@
 package main;
 
+import java.util.HashSet;
+
 public class ArrayList <T extends Comparable<T>> implements List<T>{
 
+	private T[] a;
+	private int length = 0;
+	
+	private boolean isSorted = true;
+	
+	public ArrayList() {
+		a = (T[]) new Comparable[2];
+	}
 	
 	public boolean add(T element) {
-		
-		return false;
+		if(length == a.length) {
+			grow();
+		}
+		a[length] = element;
+		length++;
+		checkSorted();
+		return true;
 	}
 
 	
 	public boolean add(int index, T element) {
-		
-		return false;
+		if(length == a.length) {
+			grow();
+		}
+		a[length] = element;
+		length++;
+		checkSorted();
+		return true;
 	}
 
 	
 	public void clear() {
-		
-		
+		a = (T[]) new Comparable[2];
+		isSorted = true;
+		length = 0;
 	}
 
 	
 	public T get(int index) {
-		
-		return null;
+		if(index > length-1) {
+			return null;
+		}
+		return a[index];
 	}
 
 	
 	public int indexOf(T element) {
-		
-		return 0;
+		for(int i = 0; i < length; i++) {
+			if(element.equals(a[i])) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	
 	public boolean isEmpty() {
-		
-		return false;
+		return length == 0;
 	}
 
 	
 	public int size() {
-		
-		return 0;
+		return length;
 	}
 
 	
 	public void sort() {
-		
-		
+		if(!isSorted) {
+			for (int i = 0; i < length - 1; i++) {
+				int minIndex = i;
+				for (int j = i+1; j < length; j++) {
+					if (a[j].compareTo(a[minIndex]) < 0) {
+						minIndex = j;
+					}
+				}
+				T temp = a[minIndex];
+				a[minIndex] = a[i];
+				a[i] = temp;
+			}
+			isSorted = true;
+		}
 	}
 
 	
 	public T remove(int index) {
-		
-		return null;
+		T val = a[index];
+		for(int i = index; i < a.length-1; i++) {
+			a[i] = a[i+1];
+		}
+		length--;
+		checkSorted();
+		return val;
 	}
 
 	
 	public void removeDuplicates() {
-		
-		
+		HashSet<T> occurances = new HashSet<T>();
+		for(int i = 0; i < length; i++) {
+			if(occurances.contains(a[i])){
+				remove(i);
+				i--;
+			}
+			else {
+				occurances.add(a[i]);
+			}
+					
+		}
+		checkSorted();
 	}
 
 	
 	public void reverse() {
-		
+		int k = 0;
+		int j = length - 1;
+		while(k < j) {
+			T temp = a[k];
+			a[k] = a[j];
+			a[j] = temp;
+			k++;
+			j--;
+		}
+		checkSorted();
 		
 	}
 
@@ -76,20 +137,57 @@ public class ArrayList <T extends Comparable<T>> implements List<T>{
 
 	
 	public T getMin() {
-		
-		return null;
+		int minIndex = 0;
+		for(int i = 0; i < length; i++) {
+			if (a[i].compareTo(a[minIndex]) < 0) {
+				minIndex = i;
+			}
+		}
+		return a[minIndex];
 	}
 
 	
 	public T getMax() {
-		
-		return null;
+		int maxIndex = 0;
+		for(int i = 0; i < length; i++) {
+			if (a[i].compareTo(a[maxIndex]) > 0) {
+				maxIndex = i;
+			}
+		}
+		return a[maxIndex];
 	}
 
 	
 	public boolean isSorted() {
-		
-		return false;
+		return isSorted;
+	}
+	
+	private void grow() {
+		T[] newArr = (T[]) new Comparable[a.length*2];
+		for(int i = 0; i < a.length; i++) {
+			newArr[i] = a[i];
+		}
+		a = newArr;
+	}
+	
+	public String toString() {
+		String str = "";
+		for(int i = 0; i < length; i++) {
+			str += a[i];
+			str += "\n";
+		}
+		return str;
+	}
+	
+	public void checkSorted() {
+		isSorted = true;
+		for (int i = 0; i < length - 1; i++) {
+			for (int j = i+1; j < length; j++) {
+				if (a[j].compareTo(a[i]) < 0) {
+					isSorted = false;
+				}
+			}
+		}
 	}
 
 }
