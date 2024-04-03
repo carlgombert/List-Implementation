@@ -2,7 +2,7 @@ package main;
 
 import java.util.HashSet;
 
-public class ArrayList <T extends Comparable<T>> implements List<T>{
+public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	private T[] a;
 	private int length = 0;
@@ -28,7 +28,10 @@ public class ArrayList <T extends Comparable<T>> implements List<T>{
 		if(length == a.length) {
 			grow();
 		}
-		a[length] = element;
+		for(int i = length; i > index-1; i--) {
+			a[i+1] = a[i];
+		}
+		a[index] = element;
 		length++;
 		checkSorted();
 		return true;
@@ -90,10 +93,10 @@ public class ArrayList <T extends Comparable<T>> implements List<T>{
 	
 	public T remove(int index) {
 		T val = a[index];
-		for(int i = index; i < a.length-1; i++) {
+		length--;
+		for(int i = index; i < length; i++) {
 			a[i] = a[i+1];
 		}
-		length--;
 		checkSorted();
 		return val;
 	}
@@ -131,7 +134,28 @@ public class ArrayList <T extends Comparable<T>> implements List<T>{
 
 	
 	public void exclusiveOr(List<T> otherList) {
+		this.sort();
+		otherList.sort();
+		this.removeDuplicates();
+		otherList.removeDuplicates();
 		
+		int i = 0;
+		int k = 0;
+		
+		while(i < length && k < otherList.size()) {
+			if(this.get(i).equals(otherList.get(k))) {
+				this.remove(i);
+				k++;
+			}
+			else if(otherList.get(k).compareTo(this.get(i)) > 0){ // this less than other
+				i++;
+			}
+			else if(otherList.get(k).compareTo(this.get(i)) < 0){ // other less than this
+				this.add(i, otherList.get(k));
+				i++;
+				k++;
+			}
+		}
 		
 	}
 
