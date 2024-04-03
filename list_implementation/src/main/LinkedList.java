@@ -82,14 +82,10 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 
 	
 	public int indexOf(T element) {
-		int count = 0;
-		Node<T> n = head;
-		while(n != null) {
-			n = n.getNext();
-			if(n.getData().equals(element)) {
-				return count;
+		for(int i = 0; i < length; i++) {
+			if(element.equals(get(i))) {
+				return i;
 			}
-			count++;
 		}
 		return -1;
 	}
@@ -148,20 +144,17 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 	
 	public void removeDuplicates() {
 		HashSet<T> occurances = new HashSet<T>();
-		Node<T> n = head;
-		int count = 0;
-		while(n.getNext() != null) {
-			count++;
-			n = n.getNext();
-			occurances.add(n.getData());
-			while(n.getNext() != null && occurances.contains(n.getNext().getData())) {
-				n.setNext(n.getNext().getNext());
-				if(n.getNext() != null) {
-					checkSorted();
-				}
-				length--;
+		for(int i = 0; i < length; i++) {
+			if(occurances.contains(get(i))){
+				remove(i);
+				i--;
 			}
+			else {
+				occurances.add(get(i));
+			}
+					
 		}
+		checkSorted();
 		
 	}
 

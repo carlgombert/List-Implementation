@@ -25,7 +25,10 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	
 	public boolean add(int index, T element) {
-		while(index > a.length) {
+		if(index > length) {
+			return false;
+		}
+		if(length == a.length) {
 			grow();
 		}
 		for(int i = length; i > index-1; i--) {
