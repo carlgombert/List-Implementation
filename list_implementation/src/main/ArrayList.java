@@ -14,6 +14,9 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 	}
 	
 	public boolean add(T element) {
+		if(element == null) {
+			return false;
+		}
 		if(length == a.length) {
 			grow();
 		}
@@ -25,7 +28,7 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	
 	public boolean add(int index, T element) {
-		if(index > length) {
+		if(index > length || index < 0 || element == null) {
 			return false;
 		}
 		if(length == a.length) {
@@ -207,6 +210,7 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 			for (int j = i+1; j < length; j++) {
 				if (a[j].compareTo(a[i]) < 0) {
 					isSorted = false;
+					return;
 				}
 			}
 		}

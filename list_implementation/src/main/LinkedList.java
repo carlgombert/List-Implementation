@@ -13,6 +13,9 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 	}
 	
 	public boolean add(T element) {
+		if(element == null) {
+			return false;
+		}
 		if(length == 0) {
 			head.setNext(new Node<T>(element));
 			length++;
@@ -31,7 +34,7 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 	}
 
 	public boolean add(int index, T element) {
-		if(index > length) {
+		if(index > length || index < 0 || element == null) {
 			return false;
 		}
 		int count = 0;
@@ -55,7 +58,7 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 
 	
 	public T get(int index) {
-		if(index > length-1) {
+		if(index > length-1 || index < 0) {
 			return null;
 		}
 		int count = 0;
@@ -249,6 +252,7 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 			for (int j = i+1; j < length-1; j++) {
 				if (get(j).compareTo(get(i)) < 0) {
 					isSorted = false;
+					return;
 				}
 			}
 		}
