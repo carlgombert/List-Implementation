@@ -6,6 +6,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
 
+import main.LinkedList;
+import main.List;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;

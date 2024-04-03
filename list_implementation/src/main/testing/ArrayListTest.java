@@ -6,10 +6,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
 
-import java.util.*;
+import main.ArrayList;
+import main.LinkedList;
+import main.List;
 
 import static org.junit.Assert.*;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Random;
 
 /**
  * JUnit Tests for the ArrayList portion of Project 3 CSCI 1933 Spring 2021.
