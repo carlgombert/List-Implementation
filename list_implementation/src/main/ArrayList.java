@@ -25,7 +25,7 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	
 	public boolean add(int index, T element) {
-		if(length == a.length) {
+		while(index > a.length) {
 			grow();
 		}
 		for(int i = length; i > index-1; i--) {
@@ -46,7 +46,7 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	
 	public T get(int index) {
-		if(index > length-1) {
+		if(index > length-1 || index < 0) {
 			return null;
 		}
 		return a[index];
@@ -134,28 +134,23 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	
 	public void exclusiveOr(List<T> otherList) {
-		this.sort();
-		otherList.sort();
 		this.removeDuplicates();
+		if(otherList.equals(null)) {
+			return;
+		}
 		otherList.removeDuplicates();
 		
-		int i = 0;
-		int k = 0;
-		
-		while(i < length && k < otherList.size()) {
-			if(this.get(i).equals(otherList.get(k))) {
-				this.remove(i);
-				k++;
+		for(int i = 0; i < otherList.size(); i++) {
+			int containsIndex = this.indexOf(otherList.get(i));
+			if(containsIndex == -1) {
+				this.add(otherList.get(i));
 			}
-			else if(otherList.get(k).compareTo(this.get(i)) > 0){ // this less than other
-				i++;
-			}
-			else if(otherList.get(k).compareTo(this.get(i)) < 0){ // other less than this
-				this.add(i, otherList.get(k));
-				i++;
-				k++;
+			else {
+				this.remove(containsIndex);
 			}
 		}
+		
+		this.sort();
 		
 	}
 

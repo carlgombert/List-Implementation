@@ -26,6 +26,8 @@ public class Main {
 		list2.add(17);
 		list2.add(18);
 		list2.add(19);
+		list2.add(31);
+		list2.add(32);
 		
 		list1.exclusiveOr(list2);
 		
