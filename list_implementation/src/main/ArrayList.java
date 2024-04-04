@@ -34,8 +34,9 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 		if(length == a.length) {
 			grow();
 		}
-		for(int i = length; i > index-1; i--) {
+		for(int i = length-1; i > index-1; i--) {
 			a[i+1] = a[i];
+
 		}
 		a[index] = element;
 		length++;
@@ -98,6 +99,9 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	
 	public T remove(int index) {
+		if(index > length-1 || index < 0) {
+			return null;
+		}
 		T val = a[index];
 		length--;
 		for(int i = index; i < length; i++) {

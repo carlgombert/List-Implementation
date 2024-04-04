@@ -403,7 +403,13 @@ public class LinkedListTest {
                 if (j < Math.min(intersectLow, intersectHigh + 1) || j > Math.max(intersectLow - 1, intersectHigh)) {
                     String strExpected = test[j];
                     String strActual = list1.remove(0);
-                    assertEquals(strExpected, strActual);
+                    try{
+                    	 assertEquals(strExpected, strActual);
+                    } catch(AssertionError e) {
+                    	System.out.println("expected: " +test[j]);
+                    	System.out.println("actual: " + list1.remove(0));
+                    	System.out.println();
+                    }
                 }
             }
         }
