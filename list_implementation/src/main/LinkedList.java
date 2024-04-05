@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 public class LinkedList<T extends Comparable<T>> implements List<T>{
 
-	private Node head = new Node(null); // dummy head
+	private Node<T> head = new Node<T>(null); // dummy head
 	private int length = 0;
 	
 	private boolean isSorted = true;
@@ -21,15 +21,13 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 			length++;
 			return true;
 		}
-		else if(length > 1) {
-			checkSorted();
-		}
 		Node<T> n = head;
 		while(n.getNext() != null) {
 			n = n.getNext();
 		}
 		n.setNext(new Node<T>(element));
 		length++;
+		checkSorted();
 		return true;
 	}
 
@@ -43,22 +41,24 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 			n = n.getNext();
 			count++;
 		}
-		Node temp = new Node<T>(element);
+		Node<T> temp = new Node<T>(element);
 		temp.setNext(n.getNext());
 		n.setNext(temp);
 		length++;
+		checkSorted();
 		return true;
 	}
 
 	
 	public void clear() {
 		head.setNext(null);
+		isSorted = true;
 		length = 0;
 	}
 
 	
 	public T get(int index) {
-		if(index > length-1 || index < 0) {
+		if(index >= length || index < 0) {
 			return null;
 		}
 		/*int count = 0;
@@ -90,10 +90,14 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 
 	
 	public int indexOf(T element) {
-		for(int i = 0; i < length; i++) {
-			if(element.equals(get(i))) {
-				return i;
+		int counter = 0;
+		Node<T> curr = head.getNext();
+		while(curr != null) {
+			if(element.equals(curr.getData())) {
+				return counter;
 			}
+			counter++;
+			curr = curr.getNext();
 		}
 		return -1;
 	}
@@ -113,22 +117,36 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 
 	
 	public void sort() {
-		if(!isSorted) {
-			for (int i = 0; i < length - 1; i++) {
-				int minIndex = i;
-				for (int j = i+1; j < length; j++) {
-					if (get(j).compareTo(get(minIndex)) < 0) {
-						minIndex = j;
+		if(length > 1) {
+			Node<T> sortedHead = new Node<T>(null);
+			Node<T> curr = head.getNext();
+			sortedHead.setNext(new Node<T>(curr.getData()));
+			Node<T> sortedCurr = sortedHead.getNext();
+			
+			curr = curr.getNext();
+			
+			while(curr != null) {
+				sortedCurr = sortedHead.getNext();
+				if(curr.getData().compareTo(sortedCurr.getData()) < 0) {
+					sortedHead.setNext(new Node<T>(curr.getData()));
+					sortedHead.getNext().setNext(sortedCurr);
+				} else {
+					while(sortedCurr.getNext() != null && curr.getData().compareTo(sortedCurr.getNext().getData()) > 0) {
+						sortedCurr = sortedCurr.getNext();
 					}
+					Node<T> temp = sortedCurr.getNext();
+					sortedCurr.setNext(new Node<T>(curr.getData()));
+					sortedCurr.getNext().setNext(temp);
 				}
-				T temp = get(minIndex);
-				remove(minIndex);
-				add(minIndex, get(i));
-				remove(i);
-				add(i, temp);
+				
+				curr = curr.getNext();
 			}
+			
+			head.setNext(sortedHead.getNext());
+			
 			isSorted = true;
 		}
+		
 	}
 
 	
@@ -145,24 +163,28 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 		Node<T> temp = n.getNext();
 		n.setNext(n.getNext().getNext());
 		length--;
+		checkSorted();
 		return temp.getData();
 	}
 
 	
 	public void removeDuplicates() {
-		HashSet<T> occurances = new HashSet<T>();
-		for(int i = 0; i < length; i++) {
-			if(occurances.contains(get(i))){
-				remove(i);
-				i--;
+		LinkedList<T> occurances = new LinkedList<>();
+		
+		Node<T> curr = head.getNext();
+		occurances.add(curr.getData());
+		while(curr != null && curr.getNext() != null) {
+			if(occurances.indexOf(curr.getNext().getData()) != -1) {
+				curr.setNext(curr.getNext().getNext());
+				length--;
 			}
 			else {
-				occurances.add(get(i));
+				occurances.add(0, curr.getNext().getData());
+				curr = curr.getNext();
 			}
-					
 		}
+			
 		checkSorted();
-		
 	}
 
 	
@@ -205,6 +227,9 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 	
 	public T getMin() {
 		if(length > 0) {
+			if(isSorted) {
+				return head.getNext().getData();
+			}
 			T min = (T) head.getNext().getData();
 			Node<T> n = head.getNext();
 			while(n != null) {
@@ -251,15 +276,23 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 	}
 	
 	private void checkSorted() {
-		isSorted = true;
-		for (int i = 0; i < length - 1; i++) {
-			for (int j = i+1; j < length-1; j++) {
-				if (get(j).compareTo(get(i)) < 0) {
-					isSorted = false;
-					return;
-				}
-			}
+		if(head.getNext() == null) {
+			isSorted = true;
+			return;
 		}
+		Node<T> curr = head.getNext();
+		while(curr.getNext() != null) {
+			if(curr.getData().compareTo(curr.getNext().getData()) > 0) {
+				isSorted = false;
+				return;
+			}
+			curr = curr.getNext();
+		}
+		isSorted = true;
+	}
+	
+	public Node<T> getHead(){
+		return head.getNext();
 	}
 
 }

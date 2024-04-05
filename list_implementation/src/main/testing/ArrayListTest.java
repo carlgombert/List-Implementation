@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.rules.Timeout;
 
 import main.ArrayList;
-import main.LinkedList;
 import main.List;
 
 import static org.junit.Assert.*;
