@@ -4,18 +4,14 @@ Group members’ names and x500s:
 
 Contributions of each partner:
   Carl:
-    Implemented chess pieces
-    Implemented board class
-    Assisted with JUnit testing
+    Implemented linkedlist
+    Assisted with implementing arraylist
+    Did debugging for JUnit tests
 
   Carson:
-    Implemented game class
-    Assisted with movement verification methods
-    Implemented JUnit testing
-
-How to compile and run program:
-  1. Open a bash terminal in the project folder
-  2. Enter the command: java -jar chess.jar
+    Implemented arraylist
+    Assisted with implementing linkedlist
+    Did the runtime analysis
 
 I certify that the information contained in this
 README file is complete and accurate. I have both read and followed
