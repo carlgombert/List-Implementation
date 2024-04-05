@@ -4,9 +4,13 @@ import java.util.HashSet;
 
 public class ArrayList<T extends Comparable<T>> implements List<T>{
 
+	// class array to store all of the data
 	private T[] a;
+	
+	// class array to store the size of the arraylist, different than the length of 'a'
 	private int length = 0;
 	
+	//class variable for keeping track of the sorted state
 	private boolean isSorted = true;
 	
 	public ArrayList() {
@@ -14,12 +18,16 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 	}
 	
 	public boolean add(T element) {
+		// don't add null elements
 		if(element == null) {
 			return false;
 		}
+		
+		// if the array is full, double the size
 		if(length == a.length) {
 			grow();
 		}
+		
 		a[length] = element;
 		length++;
 		checkSorted();
@@ -28,16 +36,22 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	
 	public boolean add(int index, T element) {
+		// make sure index is within range
 		if(index > length || index < 0 || element == null) {
 			return false;
 		}
+		
+		// if the array is full, double the size
 		if(length == a.length) {
 			grow();
 		}
+		
+		//shift all elements after index up one index
 		for(int i = length-1; i > index-1; i--) {
 			a[i+1] = a[i];
 
 		}
+		
 		a[index] = element;
 		length++;
 		checkSorted();
@@ -53,6 +67,7 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	
 	public T get(int index) {
+		// make sure index is within range
 		if(index > length-1 || index < 0) {
 			return null;
 		}
@@ -81,11 +96,12 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	
 	public void sort() {
+		// insertion sort
 		for (int i = 0; i < length - 1; i++) {
 			int minIndex = i;
-			for (int j = i+1; j < length; j++) {
-				if (a[j].compareTo(a[minIndex]) < 0) {
-					minIndex = j;
+			for (int n = i+1; n < length; n++) {
+				if (a[n].compareTo(a[minIndex]) < 0) {
+					minIndex = n;
 				}
 			}
 			T temp = a[minIndex];
@@ -97,11 +113,13 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	
 	public T remove(int index) {
+		// make sure index is within range
 		if(index > length-1 || index < 0) {
 			return null;
 		}
 		T val = a[index];
 		length--;
+		//shift all elements after index up one index
 		for(int i = index; i < length; i++) {
 			a[i] = a[i+1];
 		}
@@ -111,6 +129,7 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 
 	
 	public void removeDuplicates() {
+		// new arraylist to keep track of elements that have occured
 		ArrayList<T> occurances = new ArrayList<>();
 		
 		for(int i = 0; i < length; i++) {
@@ -150,7 +169,9 @@ public class ArrayList<T extends Comparable<T>> implements List<T>{
 		otherList.removeDuplicates();
 		
 		for(int i = 0; i < otherList.size(); i++) {
+			
 			int containsIndex = this.indexOf(otherList.get(i));
+			
 			if(containsIndex == -1) {
 				this.add(otherList.get(i));
 			}
